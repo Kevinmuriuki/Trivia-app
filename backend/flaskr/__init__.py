@@ -173,10 +173,10 @@ def create_app(test_config=None):
             })
         abort(404)
     """
-    @TODO:[X]
+    @TODO:[Done]
     Create a GET endpoint to get questions based on category.
 
-    TEST:[] In the "List" tab / main screen, clicking on one of the
+    TEST:[Successful] In the "List" tab / main screen, clicking on one of the
     categories in the left column will cause only questions of that
     category to be shown.
     """
@@ -196,17 +196,45 @@ def create_app(test_config=None):
         except:
             abort(404)
     """
-    @TODO:[X]
+    @TODO:[Done]
     Create a POST endpoint to get questions to play the quiz.
     This endpoint should take category and previous question parameters
     and return a random questions within the given category,
     if provided, and that is not one of the previous questions.
 
-    TEST:[] In the "Play" tab, after a user selects "All" or a category,
+    TEST:[Successful] In the "Play" tab, after a user selects "All" or a category,
     one question at a time is displayed, the user is allowed to answer
     and shown whether they were correct or not.
     """
+    @app.route('/quizzes', methods=['POST'])
+    def play_quizzes():
+        body = request.get_json()
 
+        if not ('quiz_category' in body and 'previous_questions' in body):
+                abort(422)
+
+        try:
+            previous_questions = body.get('previous_questions')
+            quiz_category = body.get('quiz_category')
+            category_id = quiz_category['id']
+
+            if category_id == 0:
+                questions = Question.query.filter(
+                    Question.id.notin_((previous_questions))).all()
+            else:
+                 questions = Question.query.filter(Question.id.notin_(previous_questions), Question.category == category_id).all()
+
+            new_question = questions[random.randrange(
+                0, len(questions))].format() if len(questions) > 0 else None
+
+
+            return jsonify({
+                'success': True,
+                'question': new_question
+            })
+
+        except Exception:
+            abort(422)
     """
     @TODO:[X]
     Create error handlers for all expected errors
