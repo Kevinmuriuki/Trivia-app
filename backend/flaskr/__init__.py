@@ -14,11 +14,13 @@ def create_app(test_config=None):
     setup_db(app)
 
     """
-    @TODO: Set up CORS. Allow '*' for origins. Delete the sample route after completing the TODOs
+    @TODO:[Done]
+    Set up CORS. Allow '*' for origins. Delete the sample route after completing the TODOs
     """
     CORS(app)
     """
-    @TODO: Use the after_request decorator to set Access-Control-Allow
+    @TODO:[Done]
+    Use the after_request decorator to set Access-Control-Allow
     """
     @app.after_request
     def after_request(response):
@@ -26,7 +28,7 @@ def create_app(test_config=None):
         response.headers.add('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS')
         return response
     """
-    @TODO:
+    @TODO:[Done]
     Create an endpoint to handle GET requests
     for all available categories.
     """
@@ -43,20 +45,45 @@ def create_app(test_config=None):
         })
 
     """
-    @TODO:
+    @TODO:[Done]
     Create an endpoint to handle GET requests for questions,
     including pagination (every 10 questions).
     This endpoint should return a list of questions,
     number of total questions, current category, categories.
 
-    TEST: At this point, when you start the application
+    TEST:[Successful] At this point, when you start the application
     you should see questions and categories generated,
     ten questions per page and pagination at the bottom of the screen for three pages.
     Clicking on the page numbers should update the questions.
     """
+    @app.route('/questions')
+    def retrieve_questions():
+        selection = Question.query.order_by(Question.id).all()
+        current_questions = paginate_questions(request, selection)
 
+        categories = Category.query.order_by(Category.type).all()
+
+        if len(current_questions) == 0:
+            abort(404)
+
+        return jsonify({
+            'success': True,
+            'questions': current_questions,
+            'total_questions': len(selection),
+            'categories': {category.id: category.type for category in categories},
+            'current_category': None
+        })
+    def paginate_questions(request, selection):
+        page = request.args.get('page', 1, type=int)
+        start = (page - 1) * QUESTIONS_PER_PAGE
+        end = start + QUESTIONS_PER_PAGE
+
+        questions = [question.format() for question in selection]
+        current_questions = questions[start:end]
+
+        return current_questions
     """
-    @TODO:
+    @TODO:[X]
     Create an endpoint to DELETE question using a question ID.
 
     TEST: When you click the trash icon next to a question, the question will be removed.
