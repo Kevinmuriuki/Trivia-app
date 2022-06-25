@@ -143,7 +143,6 @@ class TriviaTestCase(unittest.TestCase):
     def test_get_questions_per_category(self):
         res = self.client().get('/categories/1/questions')
         data = json.loads(res.data)
-
         self.assertEqual(res.status_code, 200)
         self.assertEqual(data['success'], True)
         self.assertTrue(len(data['questions']))
@@ -153,14 +152,24 @@ class TriviaTestCase(unittest.TestCase):
     def test_404_get_questions_per_category(self):
         res = self.client().get('/categories/a/questions')
         data = json.loads(res.data)
-
         self.assertEqual(res.status_code, 404)
         self.assertEqual(data["success"], False)
         self.assertEqual(data["message"], "resource not found")
 
-    
+    def test_play_quiz(self):
+        new_quiz_round = {'previous_questions': [],'quiz_category': {'type': 'Entertainment', 'id': 5}}
+        res = self.client().post('/quizzes', json=new_quiz_round)
+        data = json.loads(res.data)
+        self.assertEqual(res.status_code, 200)
+        self.assertEqual(data['success'], True)
 
-    
+    def test_404_play_quiz(self):
+        new_quiz_round = {'previous_questions': []}
+        res = self.client().post('/quizzes', json=new_quiz_round)
+        data = json.loads(res.data)
+        self.assertEqual(res.status_code, 422)
+        self.assertEqual(data["success"], False)
+        self.assertEqual(data["message"], "unprocessable") 
 
 # Make the tests conveniently executable
 if __name__ == "__main__":
