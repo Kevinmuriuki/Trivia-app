@@ -73,8 +73,7 @@ One note before you delve into your tasks: for each endpoint, you are expected t
 
 `GET '/categories'`
 
--Fetches a dictionary of all available categories
-
+- Fetches a dictionary of all available categories
 - *Request parameters:* none
 - *Returns:* An object with a single key, categories, that contains an object of id: category_string key:value pairs..
 
@@ -94,8 +93,7 @@ One note before you delve into your tasks: for each endpoint, you are expected t
 ```
 
 `GET \questions?page=<page_id>`
--Fetches a paginated set of questions of all available categories.
-
+- Fetches a paginated set of questions of all available categories.
 - *Request parameters (optional):* page:page_id
 - *Example response:*  
 
@@ -132,8 +130,7 @@ One note before you delve into your tasks: for each endpoint, you are expected t
 ```
 
 `DELETE /questions/<question_id>`
--Delete an existing questions from the repository of available questions
-
+- Delete an existing questions from the repository of available questions
 - *Request arguments:* question_id:int
 - *Example response:*
 
@@ -145,8 +142,7 @@ One note before you delve into your tasks: for each endpoint, you are expected t
 ```
 
 `POST /questions`
--Add a new question to the repository of available questions
-
+- Add a new question to the repository of available questions
 - *Request body:* {question:string, answer:string, difficulty:int, category:string}
 - *Example response:*
 
@@ -158,8 +154,7 @@ One note before you delve into your tasks: for each endpoint, you are expected t
 ```
 
 `POST /questions/search`
--Fetches all questions where a substring matches the search term (not case-sensitive)
-
+- Fetches all questions where a substring matches the search term (not case-sensitive)
 - *Request body:* {searchTerm:string}
 - *Example response:*
 
@@ -181,8 +176,7 @@ One note before you delve into your tasks: for each endpoint, you are expected t
 ```
 
 `GET /categories/<int:category_id>/questions`
-Fetches a dictionary of questions for the specified category
-
+- Fetches a dictionary of questions for the specified category
 - *Request argument:* category_id:int
 - *Example response:*
 
@@ -211,8 +205,7 @@ Fetches a dictionary of questions for the specified category
 ```
 
 `POST /quizzes`
--Fetches one random question within a specified category. Previously asked questions are not asked again.
-
+- Fetches one random question within a specified category. Previously asked questions are not asked again.
 - *Request body:* {previous_questions: arr, quiz_category: {id:int, type:string}}
 - *Example response*:
 
