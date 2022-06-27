@@ -6,15 +6,24 @@ h2 {
   padding-left: 1rem;
 }
 
+ul {
+  list-style-type: none;
+  padding-inline-start: 0px;
+}
+
 li {
   margin: 5px auto;
   padding-left: 2rem;
   cursor: pointer;
 }
 
-ul {
-  list-style-type: none;
-  padding-inline-start: 0px;
+li > img {
+  height: 1.2rem;
+}
+
+li > span {
+  margin: auto;
+  padding-left: .2rem;
 }
 
 form {

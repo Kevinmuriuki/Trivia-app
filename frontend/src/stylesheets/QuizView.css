@@ -6,6 +6,7 @@
 }
 
 .category-holder {
+    
     margin-top: 16px;
     font-size: 24px;
 }
@@ -16,6 +17,7 @@
 }
 
 .play-category:hover {
+    cursor: pointer;
     color: dodgerblue;
 }
 
