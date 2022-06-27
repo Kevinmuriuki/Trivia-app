@@ -1,0 +1,19 @@
+.App-header {
+    background-color: #222;
+    color: white;
+    display: flex;
+    justify-content: space-between;
+    height: 75px;
+    padding: 20px;
+    padding-right: 40%;
+    padding-left: 5%;
+  }
+  
+  .App-header > h1 {
+    color: dodgerblue;
+    cursor: pointer;
+  }
+  
+  .App-header > h2 {
+    cursor: pointer;
+  }
