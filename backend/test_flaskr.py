@@ -34,6 +34,7 @@ class TriviaTestCase(unittest.TestCase):
     Write at least one test for each test for successful operation and for expected errors.
     """
     def test_get_categories(self):
+        """Test get categories endpoint"""
         res = self.client().get('/categories')
         data = json.loads(res.data)
         self.assertEqual(res.status_code, 200)
@@ -42,6 +43,7 @@ class TriviaTestCase(unittest.TestCase):
         self.assertTrue(len(data['categories']))
 
     def test_404_sent_requesting_non_existing_category(self):
+        """Test 404 error handler end point for non existing category"""
         res = self.client().get('/categories/9999')
         data = json.loads(res.data)
 
@@ -50,6 +52,7 @@ class TriviaTestCase(unittest.TestCase):
         self.assertEqual(data['message'], 'resource not found')
 
     def test_get_paginated_questions(self):
+        """Test get paginated questions endpoint"""
         res = self.client().get('/questions')
         data = json.loads(res.data)
 
@@ -60,6 +63,7 @@ class TriviaTestCase(unittest.TestCase):
         self.assertTrue(len(data['categories']))
 
     def test_404_sent_requesting_questions_beyond_valid_page(self):
+        """Test 404 error-handler endpoint for an existing number"""
         res = self.client().get('/questions?page=1000')
         data = json.loads(res.data)
 
@@ -68,6 +72,7 @@ class TriviaTestCase(unittest.TestCase):
         self.assertEqual(data['message'], 'resource not found')
 
     def test_delete_question(self):
+        """Test the delete question endpoint"""
         question = Question(question='new question', answer='new answer', difficulty=1, category=1)
         question.insert()
         question_id = question.id
@@ -83,6 +88,7 @@ class TriviaTestCase(unittest.TestCase):
         self.assertEqual(question, None)
 
     def test_422_sent_deleting_non_existing_question(self):
+        """Test 422 error-handler endpoint for deleting non existing questions"""
         res = self.client().delete('/questions/a')
         data = json.loads(res.data)
 
@@ -91,6 +97,7 @@ class TriviaTestCase(unittest.TestCase):
         self.assertEqual(data['message'], 'unprocessable')
     
     def test_add_question(self):
+        """Test the add question endpoint"""
         new_question = {
             'question': 'new question',
             'answer': 'new answer',
@@ -107,6 +114,7 @@ class TriviaTestCase(unittest.TestCase):
         self.assertEqual(total_questions_after, total_questions_before + 1)
 
     def test_422_add_question(self):
+        """Test 422 error-handler for add-question endpoint"""
         new_question = {
             'question': 'new_question',
             'answer': 'new_answer',
@@ -120,6 +128,7 @@ class TriviaTestCase(unittest.TestCase):
         self.assertEqual(data["message"], "unprocessable")
 
     def test_search_questions(self):
+        """Test search question endpoint"""
         new_search = {'searchTerm': 'a'}
         res = self.client().post('/questions/search', json=new_search)
         data = json.loads(res.data)
@@ -130,6 +139,7 @@ class TriviaTestCase(unittest.TestCase):
         self.assertIsNotNone(data['total_questions'])
 
     def test_404_search_question(self):
+        """Test 404 error-handler for search question endpoint"""
         new_search = {
             'searchTerm': '',
         }
@@ -141,6 +151,7 @@ class TriviaTestCase(unittest.TestCase):
         self.assertEqual(data["message"], "resource not found")
 
     def test_get_questions_per_category(self):
+        """Test get questions per category endpoint"""
         res = self.client().get('/categories/1/questions')
         data = json.loads(res.data)
         self.assertEqual(res.status_code, 200)
@@ -150,6 +161,7 @@ class TriviaTestCase(unittest.TestCase):
         self.assertTrue(data['current_category'])
 
     def test_404_get_questions_per_category(self):
+        """Test 404 error handler for get questions per category endpoint"""
         res = self.client().get('/categories/a/questions')
         data = json.loads(res.data)
         self.assertEqual(res.status_code, 404)
@@ -157,6 +169,7 @@ class TriviaTestCase(unittest.TestCase):
         self.assertEqual(data["message"], "resource not found")
 
     def test_play_quiz(self):
+        """Test play quiz endpoint"""
         new_quiz_round = {'previous_questions': [],'quiz_category': {'type': 'Entertainment', 'id': 5}}
         res = self.client().post('/quizzes', json=new_quiz_round)
         data = json.loads(res.data)
@@ -164,6 +177,7 @@ class TriviaTestCase(unittest.TestCase):
         self.assertEqual(data['success'], True)
 
     def test_404_play_quiz(self):
+        """Test 404 error handler for quiz play endpoint"""
         new_quiz_round = {'previous_questions': []}
         res = self.client().post('/quizzes', json=new_quiz_round)
         data = json.loads(res.data)
